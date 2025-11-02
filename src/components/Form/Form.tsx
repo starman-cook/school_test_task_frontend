@@ -63,7 +63,8 @@ const Form = () => {
     useEffect(() => {
         
         if (state.amount > 0) {
-            navigate(`/questions/${state.currentPage}`)
+            const currentPage = localStorage.getItem('currentPage')
+            navigate(`/questions/${currentPage || '1'}`)
         } else {
             setIsMounted(true)
         }
@@ -125,7 +126,6 @@ const Form = () => {
                     amount: values.qty,
                     difficulty: values.difficulty as TDifficulty,
                     type: values.type as TType,
-                    currentPage: '1'
                 }
                 setState(result)
                 navigate('/questions/1')

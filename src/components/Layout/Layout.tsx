@@ -16,20 +16,20 @@ const Layout = () => {
         amount: parsedLs?.amount,
         difficulty: parsedLs?.difficulty,
         type: parsedLs?.type,
-        currentPage: parsedLs?.currentPage
     })
     const [isMounted, setIsMounted] = useState<boolean>(false)
-    // useEffect(() => {
-    //      const ls = localStorage.getItem('state')
-    //         if (ls) {
-    //             const parsedLs: TQuestionsState = JSON.parse(ls || '{}')
-    //             setState(parsedLs)
-    //         }
-    // }, [])
+    useEffect(() => {
+         const ls = localStorage.getItem('state')
+            if (ls) {
+                const parsedLs: TQuestionsState = JSON.parse(ls || '{}')
+                setState(parsedLs)
+            }
+    }, [])
     useEffect(() => {
         if (isMounted) {
             localStorage.setItem('state', JSON.stringify(state))
         }
+        console.log(state)
         setIsMounted(true)
     }, [state, isMounted])
     return (

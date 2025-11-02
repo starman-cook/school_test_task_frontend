@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import Button from "../../components/UI/Button/Button";
+import { QuestionsContext } from "../../components/Layout/context";
 
 const HomePage = () => {
     const navigate = useNavigate();
     const [isMounted, setIsMounted] = useState<boolean>(false)
+    const [, setState] = useContext(QuestionsContext)
     useEffect(() => {
         const ls = localStorage.getItem('state')
-        if (!ls) {
+        const parsedLs = JSON.parse(ls || '{}')
+        if (!parsedLs.amount) {
             navigate('/form')
         } else {
             setIsMounted(true)
@@ -17,6 +20,13 @@ const HomePage = () => {
     const startNewOrContinue = (restart: boolean) => {
         if (restart) {
             localStorage.removeItem('state')
+            localStorage.removeItem('currentPage')
+            setState({
+                data: [],
+                amount: 0,
+                difficulty: 'any',
+                type: 'any',
+            })
         }
         navigate('/form')
     }

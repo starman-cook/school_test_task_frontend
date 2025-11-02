@@ -7,5 +7,4 @@ export type TQuestionsState = {
     amount: number
     difficulty: TDifficulty
     type: TType
-    currentPage: string
 }
