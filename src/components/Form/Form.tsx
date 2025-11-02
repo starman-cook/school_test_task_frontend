@@ -4,15 +4,17 @@ import Button from "../UI/Button/Button"
 import Select from "../UI/Select/Select"
 import styles from './Form.module.css'
 import { QuestionsContext } from "../Layout/context"
-import type { TQuestionData } from "../../types/TQuestionData"
 import { useNavigate } from "react-router"
+import type { TDifficulty } from "../../types/TDifficulty"
+import type { TType } from "../../types/TType"
+import { fetchQuestion } from "../../api/fetchQuestion"
 
 type InputValues = {
     full_name: string
     email: string
     qty: number
-    difficulty: '' | 'any' | 'easy' | 'medium' | 'hard'
-    type: '' | 'any' | 'multiple' | 'boolean'
+    difficulty: '' | TDifficulty
+    type: '' | TType
 }
 type InputErrors = {
     full_name: string
@@ -35,7 +37,7 @@ const validations = {
     qty: /^(?:[1-9]|[1-4][0-9]|50)$/
 }
 const Form = () => {
-    const [, setState] = useContext(QuestionsContext)
+    const [state, setState] = useContext(QuestionsContext)
     const [loading, setLoading] = useState<boolean>(false)
     const [values, setValues] = useState<InputValues>(
         {
@@ -59,13 +61,13 @@ const Form = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const ls = localStorage.getItem('state')
-        if (ls) {
-            navigate('/questions?i=0')
+        
+        if (state.amount > 0) {
+            navigate(`/questions/${state.currentPage}`)
         } else {
             setIsMounted(true)
         }
-    }, [navigate])
+    }, [navigate, state])
 
 
     const inputHandler = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -116,15 +118,17 @@ const Form = () => {
         setLoading(true)
 
         try {
-            const data = await fetchData()
+            const data = await fetchQuestion(values.difficulty as TDifficulty, values.type as TType)
             if (data) {
                 const result = {
                     data: [data],
-                    amount: values.qty
+                    amount: values.qty,
+                    difficulty: values.difficulty as TDifficulty,
+                    type: values.type as TType,
+                    currentPage: '1'
                 }
                 setState(result)
-                localStorage.setItem('state', JSON.stringify(result))
-                navigate('/questions?i=0')
+                navigate('/questions/1')
             }
         } catch(err) {
             console.log(err)
@@ -133,35 +137,35 @@ const Form = () => {
         
     }
 
-    const getRandomCategoryExceptVideo = (): number => {
-        const rand = Math.floor(Math.random() * (32 - 9 + 1) + 9)
-        if (rand === 15) {
-            return getRandomCategoryExceptVideo()
-        } else {
-            return rand
-        }
-    }
-    const fetchData = async(): Promise<TQuestionData | undefined> => {
-        try {
-            const queryString = new URLSearchParams()
-            queryString.append('amount', '1')
-            queryString.append('category', getRandomCategoryExceptVideo() + '')
+    // const getRandomCategoryExceptVideo = (): number => {
+    //     const rand = Math.floor(Math.random() * (32 - 9 + 1) + 9)
+    //     if (rand === 15) {
+    //         return getRandomCategoryExceptVideo()
+    //     } else {
+    //         return rand
+    //     }
+    // }
+    // const fetchData = async(): Promise<TQuestionData | undefined> => {
+    //     try {
+    //         const queryString = new URLSearchParams()
+    //         queryString.append('amount', '1')
+    //         queryString.append('category', getRandomCategoryExceptVideo() + '')
 
-            if (values.difficulty !== 'any') {
-                queryString.append('difficulty', values.difficulty)
-            }
-            if (values.type !== 'any') {
-                queryString.append('type', values.type)
-            }
-            const response = await fetch(`https://opentdb.com/api.php?${queryString.toString()}`)
-            const data = await response.json()
-            return data.results[0]
-        } catch(err) {
-            console.log(err)
-        }
-        // Тут тоже поправить когда тип будет
-        return 
-    }
+    //         if (values.difficulty !== 'any') {
+    //             queryString.append('difficulty', values.difficulty)
+    //         }
+    //         if (values.type !== 'any') {
+    //             queryString.append('type', values.type)
+    //         }
+    //         const response = await fetch(`https://opentdb.com/api.php?${queryString.toString()}`)
+    //         const data = await response.json()
+    //         return data.results[0]
+    //     } catch(err) {
+    //         console.log(err)
+    //     }
+    //     // Тут тоже поправить когда тип будет
+    //     return 
+    // }
     if (loading || !isMounted) return <p>LOADING...</p>
     return (
         <form className={styles.form} onSubmit={submit}>

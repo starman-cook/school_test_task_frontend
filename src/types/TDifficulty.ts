@@ -1,0 +1,1 @@
+export type TDifficulty = "any" | "easy" | "medium" | "hard"

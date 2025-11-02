@@ -7,13 +7,31 @@ import type { TQuestionsState } from "../../types/TQuestionsState";
 
 
 const Layout = () => {
+     const ls = localStorage.getItem('state')
+
+    const parsedLs: TQuestionsState = JSON.parse(ls || '{}')
+            
     const [state, setState] = useState<TQuestionsState>({
-        data: [],
-        amount: 0
+        data: parsedLs?.data,
+        amount: parsedLs?.amount,
+        difficulty: parsedLs?.difficulty,
+        type: parsedLs?.type,
+        currentPage: parsedLs?.currentPage
     })
+    const [isMounted, setIsMounted] = useState<boolean>(false)
+    // useEffect(() => {
+    //      const ls = localStorage.getItem('state')
+    //         if (ls) {
+    //             const parsedLs: TQuestionsState = JSON.parse(ls || '{}')
+    //             setState(parsedLs)
+    //         }
+    // }, [])
     useEffect(() => {
-        console.log(state)
-    }, [state])
+        if (isMounted) {
+            localStorage.setItem('state', JSON.stringify(state))
+        }
+        setIsMounted(true)
+    }, [state, isMounted])
     return (
         <QuestionsContext.Provider value={[state, setState]}>
             <Header />

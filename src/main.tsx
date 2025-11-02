@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router'
 import Layout from './components/Layout/Layout.tsx'
 import FormPage from './pages/FormPage/FormPage.tsx'
 import HistoryPage from './pages/HistoryPage/HistoryPage.tsx'
+import QuestionPage from './pages/QuestionPage/QuestionPage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,11 @@ const router = createBrowserRouter([
       {
         path: '/history',
         element: <HistoryPage />
-      }
+      },
+      {
+        path: '/questions/:index',
+        element: <QuestionPage />
+      },
     ]
   }
 ])

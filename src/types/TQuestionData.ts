@@ -1,10 +1,12 @@
+import type { TDifficulty } from "./TDifficulty"
+import type { TType } from "./TType"
+
 export type TQuestionData = {
-    type: "multiple" | "boolean",
-    difficulty: "easy" | "medium" | "hard"
+    type: TType
+    difficulty: TDifficulty
     category: string
     question: string
     correct_answer: string
     incorrect_answers: string[]
-    index: number
     userAnswer: string
 }
