@@ -6,20 +6,28 @@ const HomePage = () => {
     const navigate = useNavigate();
     const [isMounted, setIsMounted] = useState<boolean>(false)
     useEffect(() => {
-        const ls = localStorage.getItem('currentTest')
+        const ls = localStorage.getItem('state')
         if (!ls) {
             navigate('/form')
         } else {
             setIsMounted(true)
         }
     }, [navigate])
+
+    const startNewOrContinue = (restart: boolean) => {
+        if (restart) {
+            localStorage.removeItem('state')
+        }
+        navigate('/form')
+    }
+
     return (
         <>
             {isMounted ?
                 <>
                     <h1>Home</h1>
-                    <Button>Start new test</Button>
-                    <Button>Continue the previous test</Button>
+                    <Button onClick={() => startNewOrContinue(true)}>Start new test</Button>
+                    <Button onClick={() => startNewOrContinue(false)}>Continue the previous test</Button>
                 </>
                 : null}
 

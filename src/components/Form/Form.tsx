@@ -4,6 +4,8 @@ import Button from "../UI/Button/Button"
 import Select from "../UI/Select/Select"
 import styles from './Form.module.css'
 import { QuestionsContext } from "../Layout/context"
+import type { TQuestionData } from "../../types/TQuestionData"
+import { useNavigate } from "react-router"
 
 type InputValues = {
     full_name: string
@@ -30,10 +32,11 @@ const errorMessages = {
 
 const validations = {
     email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-    qty: /^(?:[1-9]|[1-4]\d)$/
+    qty: /^(?:[1-9]|[1-4][0-9]|50)$/
 }
 const Form = () => {
-    const [state, setState] = useContext(QuestionsContext)
+    const [, setState] = useContext(QuestionsContext)
+    const [loading, setLoading] = useState<boolean>(false)
     const [values, setValues] = useState<InputValues>(
         {
             full_name: '',
@@ -52,6 +55,18 @@ const Form = () => {
             type: ''
         }
     )
+    const [isMounted, setIsMounted] = useState<boolean>(false)
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const ls = localStorage.getItem('state')
+        if (ls) {
+            navigate('/questions?i=0')
+        } else {
+            setIsMounted(true)
+        }
+    }, [navigate])
+
 
     const inputHandler = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setValues(prev => {
@@ -86,6 +101,10 @@ const Form = () => {
         Object.keys(values).forEach(key => {
             const value = values[key as keyof typeof values]
             const validation = validations[key as keyof typeof validations]
+            if (validation) {
+                console.log(validation)
+                console.log(validation.test(value as string))
+            }
             if (!value || (validation && !validation.test(value as string))) {
                 isValid = false
                 setErrors(prev => {
@@ -94,9 +113,40 @@ const Form = () => {
             }
         })
         if (!isValid) return
+        setLoading(true)
+
+        try {
+            const data = await fetchData()
+            if (data) {
+                const result = {
+                    data: [data],
+                    amount: values.qty
+                }
+                setState(result)
+                localStorage.setItem('state', JSON.stringify(result))
+                navigate('/questions?i=0')
+            }
+        } catch(err) {
+            console.log(err)
+        }
+        setLoading(false)
+        
+    }
+
+    const getRandomCategoryExceptVideo = (): number => {
+        const rand = Math.floor(Math.random() * (32 - 9 + 1) + 9)
+        if (rand === 15) {
+            return getRandomCategoryExceptVideo()
+        } else {
+            return rand
+        }
+    }
+    const fetchData = async(): Promise<TQuestionData | undefined> => {
         try {
             const queryString = new URLSearchParams()
-            queryString.append('amount', values.qty + '')
+            queryString.append('amount', '1')
+            queryString.append('category', getRandomCategoryExceptVideo() + '')
+
             if (values.difficulty !== 'any') {
                 queryString.append('difficulty', values.difficulty)
             }
@@ -105,12 +155,14 @@ const Form = () => {
             }
             const response = await fetch(`https://opentdb.com/api.php?${queryString.toString()}`)
             const data = await response.json()
-            setState(data)
+            return data.results[0]
         } catch(err) {
             console.log(err)
         }
+        // Тут тоже поправить когда тип будет
+        return 
     }
-
+    if (loading || !isMounted) return <p>LOADING...</p>
     return (
         <form className={styles.form} onSubmit={submit}>
             <Input
