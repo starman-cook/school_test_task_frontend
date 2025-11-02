@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import Layout from './components/Layout/Layout.tsx'
+import FormPage from './pages/FormPage/FormPage.tsx'
+import HistoryPage from './pages/HistoryPage/HistoryPage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -12,6 +14,14 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <App />
+      },
+      {
+        path: '/form',
+        element: <FormPage />
+      },
+      {
+        path: '/history',
+        element: <HistoryPage />
       }
     ]
   }
