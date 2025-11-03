@@ -38,7 +38,9 @@ const HomePage = () => {
             {isMounted ?
                 <>
                     <h1>Home</h1>
+                    <h6>---------------</h6>
                     <Button onClick={() => startNewOrContinue(true)}>Start new test</Button>
+                    <h6>---------------</h6>
                     <Button onClick={() => startNewOrContinue(false)}>Continue the previous test</Button>
                 </>
                 : null}
