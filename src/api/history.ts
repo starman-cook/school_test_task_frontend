@@ -58,3 +58,51 @@ export const createHistory = async (body: Omit<SearchHistory, '_id' | 'created_a
         data: 'in folder api, file history.ts'
     }
 }
+
+export const createQuestionsState = async (body: TQuestionsState): Promise<HistoryServerResponse<QuestionsState | string>> => {
+    try {
+        const response = await fetch(historyUrl + '/questions_state', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+        const result: HistoryServerResponse<QuestionsState> = await response.json()
+        return result
+    } catch(err) {
+        console.log(err)
+    }
+    return {
+        message: 'createQuestionState error',
+        data: 'in folder api, file history.ts'
+    }
+}
+
+export const fetchQuestionsState = async (): Promise<HistoryServerResponse<QuestionsState[] | string>> => {
+    try {
+        const response = await fetch(historyUrl + '/questions_state')
+        const result: HistoryServerResponse<QuestionsState[]> = await response.json()
+        return result
+    } catch(err) {
+        console.log(err)
+    }
+    return {
+        message: 'fetchQuestionsState error',
+        data: 'in folder api, file history.ts'
+    }
+}
+
+export const fetchQuestionsStateById = async (id: string): Promise<HistoryServerResponse<QuestionsState | string>> => {
+    try {
+        const response = await fetch(historyUrl + '/questions_state/' + id)
+        const result: HistoryServerResponse<QuestionsState> = await response.json()
+        return result
+    } catch(err) {
+        console.log(err)
+    }
+    return {
+        message: 'fetchQuestionsStateById error',
+        data: 'in folder api, file history.ts'
+    }
+}

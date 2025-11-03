@@ -8,6 +8,8 @@ import HistoryPage from './pages/HistoryPage/HistoryPage.tsx'
 import QuestionPage from './pages/QuestionPage/QuestionPage.tsx'
 import ResultsPage from './pages/ResultsPage/ResultsPage.tsx'
 import SearchHistoryPage from './pages/SearchHistoryPage/SearchHistoryPage.tsx'
+import ResultsHistoryPage from './pages/ResultsHistoryPage/ResultsHistoryPage.tsx'
+import ResultsHistoryDetailsPage from './pages/ResultsHistoryDetailsPage/ResultsHistoryDetailsPage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -41,6 +43,14 @@ const router = createBrowserRouter([
       {
         path: '/search_history',
         element: <SearchHistoryPage />
+      },
+      {
+        path: '/results_history',
+        element: <ResultsHistoryPage />
+      },
+        {
+        path: '/results_history/:id',
+        element: <ResultsHistoryDetailsPage/>
       }
     ]
   }

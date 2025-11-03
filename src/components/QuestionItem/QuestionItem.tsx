@@ -8,6 +8,7 @@ import styles from './QuestionItem.module.css'
 import { QuestionsContext } from "../Layout/context"
 import { useNavigate } from "react-router"
 import RadioButtonGroup from "../UI/RadioButtonGroup/RadioButtonGroup"
+import { createQuestionsState } from "../../api/history"
 
 type Props = {
     index: string | undefined
@@ -95,7 +96,12 @@ const QuestionItem = ({ index }: Props) => {
         return arr
     }
 
-    const submit = () => {
+    const submit = async () => {
+        try {
+            await createQuestionsState(state)
+        } catch(err) {
+            console.log(err)
+        }
         navigate('/results')
     }
 
