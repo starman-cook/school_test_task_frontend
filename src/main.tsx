@@ -7,6 +7,7 @@ import FormPage from './pages/FormPage/FormPage.tsx'
 import HistoryPage from './pages/HistoryPage/HistoryPage.tsx'
 import QuestionPage from './pages/QuestionPage/QuestionPage.tsx'
 import ResultsPage from './pages/ResultsPage/ResultsPage.tsx'
+import SearchHistoryPage from './pages/SearchHistoryPage/SearchHistoryPage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,14 @@ const router = createBrowserRouter([
         path: '/results',
         element: <ResultsPage />
       },
+      {
+        path: '/history',
+        element: <HistoryPage />
+      },
+      {
+        path: '/search_history',
+        element: <SearchHistoryPage />
+      }
     ]
   }
 ])

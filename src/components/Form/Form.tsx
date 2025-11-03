@@ -8,6 +8,7 @@ import { useNavigate } from "react-router"
 import type { TDifficulty } from "../../types/TDifficulty"
 import type { TType } from "../../types/TType"
 import { fetchQuestion } from "../../api/fetchQuestion"
+import { createHistory, type SearchHistory } from "../../api/history"
 
 type InputValues = {
     full_name: string
@@ -27,7 +28,7 @@ type InputErrors = {
 const errorMessages = {
     full_name: 'Full name is required',
     email: 'Email is required and must be a valid email',
-    qty: 'Quantity is required and must be less than 50',
+    qty: 'Quantity is required and must be between 0 and 50',
     difficulty: 'Difficulty level is required',
     type: 'Type is required'
 }
@@ -115,6 +116,7 @@ const Form = () => {
         setLoading(true)
 
         try {
+            await createHistory(values as Omit<SearchHistory, '_id' | 'created_at' | 'updated_at'>)
             const data = await fetchQuestion(values.difficulty as TDifficulty, values.type as TType)
             if (data) {
                 const result = {
