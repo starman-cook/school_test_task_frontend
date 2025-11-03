@@ -6,6 +6,7 @@ import Layout from './components/Layout/Layout.tsx'
 import FormPage from './pages/FormPage/FormPage.tsx'
 import HistoryPage from './pages/HistoryPage/HistoryPage.tsx'
 import QuestionPage from './pages/QuestionPage/QuestionPage.tsx'
+import ResultsPage from './pages/ResultsPage/ResultsPage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: '/questions/:index',
         element: <QuestionPage />
+      },
+      {
+        path: '/results',
+        element: <ResultsPage />
       },
     ]
   }

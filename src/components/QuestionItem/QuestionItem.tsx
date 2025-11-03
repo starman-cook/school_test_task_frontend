@@ -88,12 +88,15 @@ const QuestionItem = ({ index }: Props) => {
                 value: el
             }
         }) || []
-        console.log('SUKA!!!!!!:::: ', state.data[parseInt(index + '') - 1])
         arr.splice(state.data[parseInt(index + '') - 1].correctAnswerIndex, 0, {
             label: question?.correct_answer + '',
             value: question?.correct_answer + ''
         })
         return arr
+    }
+
+    const submit = () => {
+        navigate('/results')
     }
 
     return (
@@ -117,7 +120,7 @@ const QuestionItem = ({ index }: Props) => {
                         <div className={styles.buttonBlock}>
                             {hasPrev ? <Button onClick={prev}>Prev</Button> : null}
                             {hasNext ? <Button onClick={next}>Next</Button> : null}
-                            {parseInt(index + '') === +state.amount ? <Button onClick={next}>Submit</Button> : null}
+                            {parseInt(index + '') === +state.amount ? <Button onClick={submit}>Submit</Button> : null}
                         </div>
                     </>
             }

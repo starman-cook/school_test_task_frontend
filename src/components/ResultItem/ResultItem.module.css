@@ -1,0 +1,17 @@
+.resultItem {
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.answer {
+    font-size: 10px;
+    display: inline-block;
+}
+
+.answer--correct {
+    background: lightgreen;
+}
+.answer--incorrect {
+    background: lightcoral;
+}

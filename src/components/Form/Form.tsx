@@ -104,10 +104,6 @@ const Form = () => {
         Object.keys(values).forEach(key => {
             const value = values[key as keyof typeof values]
             const validation = validations[key as keyof typeof validations]
-            if (validation) {
-                console.log(validation)
-                console.log(validation.test(value as string))
-            }
             if (!value || (validation && !validation.test(value as string))) {
                 isValid = false
                 setErrors(prev => {
@@ -139,35 +135,6 @@ const Form = () => {
         
     }
 
-    // const getRandomCategoryExceptVideo = (): number => {
-    //     const rand = Math.floor(Math.random() * (32 - 9 + 1) + 9)
-    //     if (rand === 15) {
-    //         return getRandomCategoryExceptVideo()
-    //     } else {
-    //         return rand
-    //     }
-    // }
-    // const fetchData = async(): Promise<TQuestionData | undefined> => {
-    //     try {
-    //         const queryString = new URLSearchParams()
-    //         queryString.append('amount', '1')
-    //         queryString.append('category', getRandomCategoryExceptVideo() + '')
-
-    //         if (values.difficulty !== 'any') {
-    //             queryString.append('difficulty', values.difficulty)
-    //         }
-    //         if (values.type !== 'any') {
-    //             queryString.append('type', values.type)
-    //         }
-    //         const response = await fetch(`https://opentdb.com/api.php?${queryString.toString()}`)
-    //         const data = await response.json()
-    //         return data.results[0]
-    //     } catch(err) {
-    //         console.log(err)
-    //     }
-    //     // Тут тоже поправить когда тип будет
-    //     return 
-    // }
     if (loading || !isMounted) return <p>LOADING...</p>
     return (
         <form className={styles.form} onSubmit={submit}>

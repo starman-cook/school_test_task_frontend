@@ -31,7 +31,6 @@ const Layout = () => {
         if (isMounted) {
             localStorage.setItem('state', JSON.stringify(state))
         }
-        console.log(state)
         setIsMounted(true)
     }, [state, isMounted])
     return (
