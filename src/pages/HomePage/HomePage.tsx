@@ -26,6 +26,8 @@ const HomePage = () => {
                 amount: 0,
                 difficulty: 'any',
                 type: 'any',
+                email: '',
+                fullName: ''
             })
         }
         navigate('/form')

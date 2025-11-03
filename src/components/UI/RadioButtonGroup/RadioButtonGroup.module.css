@@ -1,0 +1,13 @@
+.radioButtonGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.radioLabel {
+    display: block;
+    margin: 10px 0;
+}
+
+.radioLabel input {
+    margin-right: 10px;
+}

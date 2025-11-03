@@ -7,4 +7,6 @@ export const QuestionsContext = createContext<[TQuestionsState, Dispatch<SetStat
     amount: 0,
     difficulty: 'any',
     type: 'any',
+    email: '',
+    fullName: ''
 }, () => {}]);

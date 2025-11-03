@@ -126,6 +126,8 @@ const Form = () => {
                     amount: values.qty,
                     difficulty: values.difficulty as TDifficulty,
                     type: values.type as TType,
+                    email: values.email,
+                    fullName: values.full_name
                 }
                 setState(result)
                 navigate('/questions/1')

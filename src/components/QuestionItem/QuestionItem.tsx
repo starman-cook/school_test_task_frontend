@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState, type ChangeEvent } from "react"
 import type { TQuestionData } from "../../types/TQuestionData"
 import { fetchQuestion } from "../../api/fetchQuestion"
 import type { TDifficulty } from "../../types/TDifficulty"
@@ -7,6 +7,7 @@ import Button from "../UI/Button/Button"
 import styles from './QuestionItem.module.css'
 import { QuestionsContext } from "../Layout/context"
 import { useNavigate } from "react-router"
+import RadioButtonGroup from "../UI/RadioButtonGroup/RadioButtonGroup"
 
 type Props = {
     index: string | undefined
@@ -51,7 +52,7 @@ const QuestionItem = ({ index }: Props) => {
                 if (state.data[parsedIndex - 1]) {
                     setQuestion(state.data[parsedIndex - 1])
                 } else {
-                    fetchNewQuestion('easy', 'boolean')
+                    fetchNewQuestion(state.difficulty, state.type)
                 }
             }
         } catch (err) {
@@ -72,21 +73,53 @@ const QuestionItem = ({ index }: Props) => {
         navigate(`/questions/${parseInt(index) - 1}`)
     }
 
+    const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const copyState = { ...state }
+        copyState.data[parseInt(index || '') - 1].userAnswer = e.target.value
+        setState(copyState)
+    }
+
+
+
+    const getOptions = (): { label: string, value: string }[] => {
+        const arr = question?.incorrect_answers.map(el => {
+            return {
+                label: el,
+                value: el
+            }
+        }) || []
+        console.log('SUKA!!!!!!:::: ', state.data[parseInt(index + '') - 1])
+        arr.splice(state.data[parseInt(index + '') - 1].correctAnswerIndex, 0, {
+            label: question?.correct_answer + '',
+            value: question?.correct_answer + ''
+        })
+        return arr
+    }
+
     return (
         <>
             {error ?
                 <h2>{error}</h2>
                 :
-                <>
-                    <h1>SOME TEXT</h1>
-                    <p>{JSON.stringify(question)}</p>
+                !question || isNaN(parseInt(state.data[parseInt(index + '') - 1]?.correctAnswerIndex + '')) ?
+                    null :
+                    <>
+                        <h1>--------------</h1>
+                        <p>{question?.question}</p>
+                        <RadioButtonGroup
+                            name={'userAnswer'}
+                            index={index + ''}
+                            options={getOptions()}
+                            onChange={changeHandler}
+                            value={state.data[parseInt(index + '') - 1].userAnswer}
+                        />
 
-                    <div className={styles.buttonBlock}>
-                        {hasPrev ? <Button onClick={prev}>Prev</Button> : null}
-                        {hasNext ? <Button onClick={next}>Next</Button> : null}
-                        {parseInt(index + '') === +state.amount ? <Button onClick={next}>Submit</Button> : null}
-                    </div>
-                </>
+                        <div className={styles.buttonBlock}>
+                            {hasPrev ? <Button onClick={prev}>Prev</Button> : null}
+                            {hasNext ? <Button onClick={next}>Next</Button> : null}
+                            {parseInt(index + '') === +state.amount ? <Button onClick={next}>Submit</Button> : null}
+                        </div>
+                    </>
             }
 
         </>

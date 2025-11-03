@@ -9,4 +9,5 @@ export type TQuestionData = {
     correct_answer: string
     incorrect_answers: string[]
     userAnswer: string
+    correctAnswerIndex: number
 }

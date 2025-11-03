@@ -1,6 +1,7 @@
 import type { TDifficulty } from "../types/TDifficulty"
 import type { TQuestionData } from "../types/TQuestionData"
 import type { TType } from "../types/TType"
+import { getRandomNumber } from "../utils/getRandomNumber"
 import { apiUrl } from "./apiUrl"
 
  const getRandomCategoryExceptVideo = (): number => {
@@ -25,6 +26,7 @@ import { apiUrl } from "./apiUrl"
             }
             const response = await fetch(`${apiUrl}?${queryString.toString()}`)
             const data = await response.json()
+            data.results[0].correctAnswerIndex = getRandomNumber(0, data.results[0].incorrect_answers.length)
             return data.results[0]
         } catch(err) {
             console.log(err)

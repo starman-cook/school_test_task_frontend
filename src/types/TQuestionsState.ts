@@ -7,4 +7,6 @@ export type TQuestionsState = {
     amount: number
     difficulty: TDifficulty
     type: TType
+    email: string
+    fullName: string
 }

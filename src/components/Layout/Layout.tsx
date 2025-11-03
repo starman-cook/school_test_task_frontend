@@ -16,6 +16,8 @@ const Layout = () => {
         amount: parsedLs?.amount,
         difficulty: parsedLs?.difficulty,
         type: parsedLs?.type,
+        email: parsedLs?.email,
+        fullName: parsedLs?.fullName,
     })
     const [isMounted, setIsMounted] = useState<boolean>(false)
     useEffect(() => {
